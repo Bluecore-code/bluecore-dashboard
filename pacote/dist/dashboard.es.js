@@ -626,6 +626,66 @@ x;a.half=C;d&&!1===a.visible||(e+=E);});J(c,"afterTranslate");},sortByAngle:func
 //# sourceMappingURL=funnel.js.map
 });
 
+function serialize(form) {
+    if (!form || form.nodeName !== "FORM") {
+        return;
+    }
+    var i,
+        j,
+        q = [];
+    for (i = form.elements.length - 1; i >= 0; i = i - 1) {
+        if (form.elements[i].name === "") {
+            continue;
+        }
+        switch (form.elements[i].nodeName) {
+            case "INPUT":
+                switch (form.elements[i].type) {
+                    case "text":
+                    case "hidden":
+                    case "password":
+                    case "button":
+                    case "reset":
+                    case "submit":
+                        q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                        break;
+                    case "checkbox":
+                    case "radio":
+                        if (form.elements[i].checked) {
+                            q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                        }
+                        break;
+                    case "file":
+                        break;
+                }break;
+            case "TEXTAREA":
+                q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                break;
+            case "SELECT":
+                switch (form.elements[i].type) {
+                    case "select-one":
+                        q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                        break;
+                    case "select-multiple":
+                        for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
+                            if (form.elements[i].options[j].selected) {
+                                q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].options[j].value));
+                            }
+                        }break;
+                }
+                break;
+            case "BUTTON":
+                switch (form.elements[i].type) {
+                    case "reset":
+                    case "submit":
+                    case "button":
+                        q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));break;
+                }
+                break;
+        }
+    }
+    return q.join("&");
+}
+
 ___$insertStyle("@charset \"UTF-8\";\n@import \"https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap\";\n:root {\n  --db-font: Rubik;\n  --db-bg: #e1e4e7;\n  --db-color-primary: #5f4ee2;\n  --db-border-color: #e1e1e1;\n  --db-text-color: #575d66;\n  --db-border-radius: 6px;\n  --db-font-size: 1rem;\n  --db-font-size-sm: 0.6875em;\n  --db-card-width: 280px;\n  --db-card-maxwidth: 480px;\n}\n\n.grid-header {\n  padding: 1em;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.dashboard-wrapper {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  font-size: var(--db-font-size);\n  padding: 1rem;\n  margin-bottom: 2em;\n  display: grid;\n  grid-gap: 1.5em;\n  max-width: 100%;\n  grid-auto-flow: dense;\n  font-family: var(--db-font);\n  grid-template-columns: repeat(auto-fill, minmax(var(--db-card-width), 1fr));\n  grid-auto-rows: auto;\n}\n.dashboard-wrapper *, .dashboard-wrapper *:before, .dashboard-wrapper *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.dashboard-wrapper *:focus {\n  outline: 0;\n}\n@media (max-width: 460px) {\n  .dashboard-wrapper {\n    padding: 0.3rem;\n    grid-gap: 0.5rem;\n  }\n}\n.dashboard-wrapper .filterForm {\n  display: none;\n}\n.dashboard-wrapper .span2 {\n  grid-column: auto/span 2;\n}\n@media (max-width: 640px) {\n  .dashboard-wrapper .span2 {\n    grid-column: 1;\n  }\n}\n.dashboard-wrapper .spanLine {\n  grid-column: 1/-1;\n}\n.dashboard-wrapper .chartType {\n  padding: 1em;\n}\n.dashboard-wrapper .session-title {\n  grid-column: 1/-1;\n  padding: 2rem 0 0.5rem 0;\n  font-size: 1.5rem;\n  font-weight: 300;\n  color: var(--db-text-color);\n  position: relative;\n}\n.dashboard-wrapper .session-title:after {\n  content: \"\";\n  border-bottom: 2px solid var(--db-text-color);\n  display: block;\n  margin-top: 0.5rem;\n  opacity: 0.2;\n}\n\n.db-card {\n  border-radius: var(--db-border-radius);\n  background-color: white;\n  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.2);\n  position: relative;\n}\n.db-card .title {\n  font-weight: 500;\n  padding: 1em;\n  border-bottom: 1px solid #e1e1e1;\n  color: #575d66;\n}\n.db-card .URL {\n  position: absolute;\n  text-decoration: none;\n  right: 0;\n  top: 0;\n  background-color: #575d66;\n  color: white;\n  padding: 0.5em 0.7em;\n  font-size: var(--db-font-size-sm);\n  border-radius: 6px;\n  opacity: 0.3;\n  transition: 0.3s;\n}\n.db-card .URL:hover {\n  background-color: var(--db-color-primary);\n  opacity: 1;\n}\n\n.db-error {\n  position: fixed;\n  display: flex;\n  top: 0;\n  right: 1rem;\n  border-radius: 0 0 4px 4px;\n  color: white;\n  font-size: 13px;\n  line-height: 1;\n}\n.db-error span {\n  background-color: #e1e1e1;\n  padding: 0.5em;\n  border-radius: 0 0 0 4px;\n  font-size: 1.6em;\n  display: flex;\n  place-items: center;\n}\n.db-error div {\n  display: flex;\n  place-items: center;\n  padding: 0 1em;\n  background-color: #ff4860;\n}\n.db-error a {\n  display: flex;\n  place-items: center;\n  background-color: #e1e1e1;\n  border-radius: 0 0 4px 0;\n  text-decoration: none;\n  padding: 0 1em;\n  color: var(--db-text-color);\n  transition: 0.3s;\n}\n.db-error a:hover {\n  background-color: var(--db-color-primary);\n  color: white;\n}\n\n.db-row {\n  display: flex;\n  width: 100%;\n  gap: 1em;\n}\n.db-row > * {\n  flex-basis: 0;\n  flex-grow: 1;\n}\n\n.db-modal-dialog {\n  background-color: rgba(30, 30, 30, 0.9);\n  position: fixed;\n  left: 0;\n  top: 0;\n  width: 100vw;\n  height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 999;\n  padding: 1em;\n  color: var(--db-text-color);\n  opacity: 0;\n  visibility: hidden;\n  transition: 0.3s;\n  font-family: var(--db-font);\n  font-size: var(--db-font-size);\n}\n@media (max-width: 460px) {\n  .db-modal-dialog {\n    padding: 0;\n  }\n}\n.db-modal-dialog *, .db-modal-dialog *:before, .db-modal-dialog *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.db-modal-dialog *:focus {\n  outline: 0;\n}\n.db-modal-dialog form {\n  display: block;\n  max-width: 420px;\n  width: 100%;\n}\n.db-modal-dialog .db-modal-content {\n  background-color: white;\n  border-radius: var(--db-border-radius);\n  width: 100%;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 24px 60px -16px rgba(0, 0, 0, 0.3);\n  transform: translateY(-2em);\n  transition: 0.3s 0.3s;\n}\n@media (max-width: 460px) {\n  .db-modal-dialog .db-modal-content {\n    border-radius: 0;\n    max-height: unset;\n    height: 100vh;\n  }\n}\n.db-modal-dialog .db-modal-content label {\n  display: block;\n  margin: 0 0 0.3em 0;\n  font-size: 0.815em;\n  color: var(--db-text-color);\n  opacity: 0.8;\n}\n.db-modal-dialog .db-modal-content label.divider {\n  border-bottom: 1px solid var(--db-border-color);\n  padding: 0.8em 0 0.5em 0;\n  margin: 0 0 0.5em 0;\n}\n.db-modal-dialog .db-modal-content .db-modal-header {\n  position: relative;\n  flex-shrink: 0;\n  padding: 1em;\n  font-size: 1.2em;\n  border-bottom: 1px solid var(--db-border-color);\n}\n.db-modal-dialog .db-modal-content .db-modal-header .db-close {\n  position: absolute;\n  cursor: pointer;\n  transition: 0.3s;\n  right: 0.3em;\n  top: 0.3em;\n  text-decoration: none;\n  color: var(--db-text-color);\n  opacity: 0.5;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 2em;\n  height: 2em;\n  font-size: 1.2em;\n}\n.db-modal-dialog .db-modal-content .db-modal-header .db-close:hover {\n  opacity: 1;\n}\n.db-modal-dialog .db-modal-content .db-modal-body {\n  flex-grow: 1;\n  overflow-y: auto;\n  padding: 1.2em;\n}\n.db-modal-dialog .db-modal-content .db-modal-actions {\n  flex-shrink: 0;\n  padding: 1.2em;\n  display: flex;\n  justify-content: space-between;\n  border-top: 1px solid var(--db-border-color);\n}\n.db-modal-dialog.active {\n  opacity: 1;\n  visibility: visible;\n}\n.db-modal-dialog.active .db-modal-content {\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n}\n.db-modal-dialog .db-input-group {\n  padding: 0 0 1em 0;\n}\n.db-modal-dialog .db-input-group:last-child {\n  padding: 0;\n}\n.db-modal-dialog .db-input-group .db-input {\n  font-size: 0.875em;\n  caret-color: var(--db-color-primary);\n  padding: 0.875em;\n  border: 1px solid var(--db-border-color);\n  border-radius: var(--db-border-radius);\n  font-family: var(--db-font);\n  width: 100%;\n  color: var(--db-text-color);\n  transition: 0.3s;\n  position: relative;\n}\n.db-modal-dialog .db-input-group .db-input:focus {\n  border-color: var(--db-color-primary);\n}\n.db-modal-dialog .db-input-group select.db-input {\n  appearance: none;\n  background: url('data:image/svg+xml;charset=UTF-8,<svg width=\"12\" height=\"7\" viewBox=\"0 0 12 7\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.02734 0.472656C1.875 0.332031 1.69922 0.261719 1.5 0.261719C1.30078 0.261719 1.125 0.337891 0.972656 0.490234C0.832031 0.630859 0.761719 0.800781 0.761719 1C0.761719 1.19922 0.832031 1.375 0.972656 1.52734L5.47266 6.02734C5.625 6.17969 5.80078 6.25586 6 6.25586C6.19922 6.25586 6.375 6.17969 6.52734 6.02734L11.0273 1.52734C11.1328 1.43359 11.2031 1.32227 11.2383 1.19336C11.2734 1.06445 11.2734 0.935547 11.2383 0.806641C11.2031 0.666016 11.1387 0.548828 11.0449 0.455078C10.9512 0.361328 10.834 0.296875 10.6934 0.261719C10.5645 0.226562 10.4355 0.226562 10.3066 0.261719C10.1777 0.296875 10.0664 0.367188 9.97266 0.472656L6 4.44531L2.02734 0.472656Z\" fill=\"%23999fb0\"/></svg>') no-repeat right 1rem center/12px auto white;\n}\n.db-modal-dialog .db-check-group {\n  padding: 0.4em 0;\n}\n.db-modal-dialog .db-check-group > input {\n  display: none;\n}\n.db-modal-dialog .db-check-group > input[type=checkbox] + label {\n  border-radius: var(--db-border-radius);\n}\n.db-modal-dialog .db-check-group > input[type=radio] + label:before {\n  content: \"●\";\n  border-radius: 40px !important;\n}\n.db-modal-dialog .db-check-group > input:checked + label:before {\n  content: \"\";\n  border: 0;\n  background: url('data:image/svg+xml;charset=UTF-8,<svg aria-hidden=\"true\" focusable=\"false\" data-prefix=\"far\" data-icon=\"check\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"white\" d=\"M435.848 83.466L172.804 346.51l-96.652-96.652c-4.686-4.686-12.284-4.686-16.971 0l-28.284 28.284c-4.686 4.686-4.686 12.284 0 16.971l133.421 133.421c4.686 4.686 12.284 4.686 16.971 0l299.813-299.813c4.686-4.686 4.686-12.284 0-16.971l-28.284-28.284c-4.686-4.686-12.284-4.686-16.97 0z\" class=\"\"></path></svg>') no-repeat center/12px auto var(--db-color-primary);\n}\n.db-modal-dialog .db-check-group > input:checked[type=radio] + label:before {\n  content: \"●\";\n  border: 0;\n  background: var(--db-color-primary);\n}\n.db-modal-dialog .db-check-group > label {\n  transition: 0.3s;\n  display: inline-flex;\n  gap: 0.5rem;\n  align-items: center;\n  cursor: pointer;\n  opacity: 1;\n}\n.db-modal-dialog .db-check-group > label:before {\n  content: \"\";\n  transition: 0.3s;\n  color: white;\n  line-height: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-position: center;\n  width: 22px;\n  height: 22px;\n  border: 1px solid var(--db-border-color);\n  border-radius: var(--db-border-radius);\n}\n\n.db-btn {\n  cursor: pointer;\n  transition: 0.3s;\n  border: 0;\n  font-size: 0.85em;\n  padding: 0.8em 1.5em;\n  border-radius: var(--db-border-radius);\n  letter-spacing: 0.04em;\n  position: relative;\n}\n.db-btn-primary {\n  color: white;\n  background-color: var(--db-color-primary);\n}\n.db-btn-primary:before {\n  content: \"\";\n  left: 0;\n  top: 0;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  border-radius: inherit;\n  box-shadow: 0 0 0 0 var(--db-color-primary);\n  background-color: transparent;\n  opacity: 0;\n  transition: 0.3s;\n}\n.db-btn-primary:hover {\n  box-shadow: inset 0 0 0 300px rgba(0, 0, 0, 0.1);\n}\n.db-btn-primary:hover:before {\n  opacity: 0.2;\n  box-shadow: 0 0 0 4px var(--db-color-primary);\n}\n.db-btn-secondary {\n  color: var(--db-text-color);\n  background-color: var(--db-border-color);\n}\n.db-btn-secondary:hover {\n  box-shadow: inset 0 0 0 300px rgba(0, 0, 0, 0.1);\n}\n\n[id*=ribbon] {\n  padding: 0 !important;\n}\n\n.ribbon {\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n  padding: 0.5rem;\n}\n.ribbon-item {\n  flex-basis: 0;\n  flex-grow: 1;\n  color: var(--db-text-color);\n  border: 1px solid var(--db-border-color);\n  border-radius: 6px;\n  margin: 0.5rem;\n  display: flex;\n  flex-direction: column;\n}\n@media (max-width: 1600px) {\n  .ribbon-item {\n    flex-basis: calc(20%);\n  }\n}\n@media (max-width: 1200px) {\n  .ribbon-item {\n    flex-basis: calc(25%);\n  }\n}\n@media (max-width: 992px) {\n  .ribbon-item {\n    flex-basis: calc(50% - 1rem);\n  }\n}\n@media (max-width: 567px) {\n  .ribbon-item {\n    flex-basis: calc(100% - 1rem);\n  }\n}\n.ribbon-item-title {\n  text-align: center;\n  text-transform: uppercase;\n  font-size: 0.6875rem;\n  padding: 0.5rem;\n  border-bottom: 1px solid var(--db-border-color);\n  opacity: 0.6;\n  flex-shrink: 0;\n  background-color: var(--db-bg);\n}\n.ribbon-item h3 {\n  font-size: 1.5rem;\n  font-weight: 400;\n  margin: 1rem 0;\n  flex-grow: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--db-color-primary);\n}\n.ribbon-item .subnumb {\n  display: flex;\n  flex-shrink: 0;\n  justify-content: space-around;\n  border-top: 1px solid var(--db-border-color);\n}\n.ribbon-item .subnumb > span {\n  flex-basis: 0;\n  flex-grow: 1;\n  text-align: center;\n  padding: 0.5rem;\n  font-size: 0.875rem;\n  opacity: 0.8;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.ribbon-item .subnumb > span:not(:first-child) {\n  border-left: 1px solid var(--db-border-color);\n}");
 
 data(highcharts);
@@ -640,11 +700,66 @@ function Dashboard(options) {
 
     var theme = options.theme ? options.theme : defaults.theme;
 
+    function createModalFilter() {
+        var form = document.querySelector('.filterForm');
+        var modalFilter = document.createElement('div');
+        modalFilter.classList.add('grid-header');
+        modalFilter.innerHTML = `
+                <button class="db-btn db-btn-primary db-toggle-modal" data-bd-filter="oi">Filtros</button>
+                <div class="db-modal-dialog">
+                    <form class="formFilter" method="get" id="filterDashboard">
+                        <div class="db-modal-content">
+                            <div class="db-modal-header">
+                                Filtros
+                                <a class="db-close db-toggle-dsimiss">&times;</a>
+                            </div>
+                            <div class="db-modal-body">
+                                ${form.innerHTML}
+                            </div>
+                            <div class="db-modal-actions">
+                                <button type="reset" class="db-btn db-btn-secondary">Limpar</button>
+                                <button type="submit" class="setFilter db-btn db-btn-primary db-toggle-filter db-toggle-dsimiss" data-filter="oi">Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        `;
+
+        form.remove();
+        document.getElementById(options.el).before(modalFilter);
+        document.querySelector('.db-toggle-modal').addEventListener('click', openModal);
+        document.querySelector('.db-toggle-dsimiss').addEventListener('click', closeModal);
+        window.addEventListener("click", windowOnClick);
+        document.getElementById('filterDashboard').addEventListener('submit', filterDashboard);
+    }
+    //click outside close modal
+    function windowOnClick(event) {
+        var modal = document.querySelector(".db-modal-dialog");
+        if (event.target === modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    function openModal() {
+        document.querySelector('.db-modal-dialog').classList.add('active');
+    }
+
+    function closeModal() {
+        document.querySelector('.db-modal-dialog').classList.remove('active');
+    }
+
+    function filterDashboard(event) {
+        event.preventDefault();
+        var data$$1 = serialize(event.target);
+        console.log(data$$1);
+    }
+
     async function readJson() {
         var html = '';
         await fetch(options.json).then(response => response.json()).then(data$$1 => {
             data$$1.forEach((item, index) => html += buildDashboard(item, index));
             document.getElementById(options.el).innerHTML = html;
+            createModalFilter();
         });
     }
 
@@ -652,15 +767,22 @@ function Dashboard(options) {
 
     function buildDashboard(item, index) {
         var chartID = item.Chart_Type + index;
-        let el = `<div class="db-card ${item.Span}">
-                        <div class="title">${item.Title}</div>
-                        <a class="URL" target="_blank" href="${item.URL_data}">
-                        ${item.URL_data}
-                        </a>
-                        <div class="chartType" id="${chartID}"></div>
-                    </div>
-        `;
-        setTimeout(() => createChart(chartID, item.URL_data), 1000);
+        var el;
+        if (item.Chart_Type == 'session') {
+            el = `
+                <div class="session-title">` + item.Title + `</div>
+            `;
+        } else {
+            el = `<div class="db-card ${item.Span}">
+                            <div class="title">${item.Title}</div>
+                            <a class="URL" target="_blank" href="${item.URL_data}">
+                            ${item.URL_data}
+                            </a>
+                            <div class="chartType" id="${chartID}"></div>
+                        </div>
+            `;
+        }
+        setTimeout(() => createChart(chartID, item.URL_data), 100);
         return el;
     }
 
@@ -1155,38 +1277,6 @@ function Dashboard(options) {
                 el.innerHTML = html;
                 document.getElementById(id).appendChild(el);
             });
-
-            // $.ajax({
-            // type: "GET",  
-            // url: URL,
-            // dataType: "text",       
-            // success: function(response)
-            //     {
-            //         data = $.csv.toArrays(response);
-
-            //         $('#'+id).append(`
-            //             <div class="ribbon"></div>
-            //         `);
-            //         $.each(data, function(index) {
-            //             var col = data[index].toString().split(',');
-
-            //             var col2 = (col[2] != undefined ? `<span>`+col[2]+`</span>` : '');
-            //             var col3 = (col[3] != undefined ? `<span>`+col[3]+`</span>` : '');
-            //             var col4 = (col[4] != undefined ? `<span>`+col[4]+`</span>` : '');
-            //             var sub = (col2 == '' && col3 == '' && col4 == '' ? '' : '<div class="subnumb">'+ col2 + col3 + col4 +'</div>');
-
-            //             $('#'+id).find('.ribbon').append(`
-            //                 <div class="ribbon-item">
-            //                     <div class="ribbon-item-title">`+col[0]+`</div>
-            //                     <h3>`+col[1]+`</h3>
-            //                     `+sub+`
-            //                 </div>
-            //             `);
-
-            //         });
-            //     }
-
-            // });
         }
     }
 }

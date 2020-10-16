@@ -5,6 +5,7 @@ import Funnel from 'highcharts/modules/funnel';
 Data(Highcharts);
 Funnel(Highcharts);
 
+import serialize from './components/serialize';
 import './dashboard.scss';
 
 function Dashboard(options) {
@@ -14,7 +15,61 @@ function Dashboard(options) {
         }
     }
 
-    var theme = options.theme ? options.theme : defaults.theme
+    var theme = options.theme ? options.theme : defaults.theme;
+
+    function createModalFilter() {
+        var form = document.querySelector('.filterForm');
+        var modalFilter = document.createElement('div');
+        modalFilter.classList.add('grid-header');
+        modalFilter.innerHTML = `
+                <button class="db-btn db-btn-primary db-toggle-modal" data-bd-filter="oi">Filtros</button>
+                <div class="db-modal-dialog">
+                    <form class="formFilter" method="get" id="filterDashboard">
+                        <div class="db-modal-content">
+                            <div class="db-modal-header">
+                                Filtros
+                                <a class="db-close db-toggle-dsimiss">&times;</a>
+                            </div>
+                            <div class="db-modal-body">
+                                ${form.innerHTML}
+                            </div>
+                            <div class="db-modal-actions">
+                                <button type="reset" class="db-btn db-btn-secondary">Limpar</button>
+                                <button type="submit" class="setFilter db-btn db-btn-primary db-toggle-filter db-toggle-dsimiss" data-filter="oi">Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        `;
+
+        form.remove();
+        document.getElementById(options.el).before(modalFilter);
+        document.querySelector('.db-toggle-modal').addEventListener('click', openModal);
+        document.querySelector('.db-toggle-dsimiss').addEventListener('click', closeModal);
+        window.addEventListener("click", windowOnClick);
+        document.getElementById('filterDashboard').addEventListener('submit', filterDashboard);
+    }
+    //click outside close modal
+    function windowOnClick(event){
+        var modal = document.querySelector(".db-modal-dialog");
+        if (event.target === modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    function openModal() {
+        document.querySelector('.db-modal-dialog').classList.add('active');
+    }
+
+    function closeModal() {
+        document.querySelector('.db-modal-dialog').classList.remove('active');
+    }
+
+    function filterDashboard(event) {
+        event.preventDefault();
+        var data = serialize(event.target);
+        console.log(data);
+    }
 
     async function readJson() {
         var html = '';
@@ -23,6 +78,7 @@ function Dashboard(options) {
             .then((data) => {
                 data.forEach((item, index) => html += buildDashboard(item, index));
                 document.getElementById(options.el).innerHTML = html;
+                createModalFilter();
             });
     }
 
@@ -30,15 +86,22 @@ function Dashboard(options) {
 
     function buildDashboard(item, index) {
         var chartID = item.Chart_Type + index;
-        let el = `<div class="db-card ${item.Span}">
-                        <div class="title">${item.Title}</div>
-                        <a class="URL" target="_blank" href="${item.URL_data}">
-                        ${item.URL_data}
-                        </a>
-                        <div class="chartType" id="${chartID}"></div>
-                    </div>
-        `;
-        setTimeout(() => createChart(chartID, item.URL_data), 1000);
+        var el;
+        if (item.Chart_Type == 'session') {
+            el = `
+                <div class="session-title">`+ item.Title + `</div>
+            `;
+        } else {
+            el = `<div class="db-card ${item.Span}">
+                            <div class="title">${item.Title}</div>
+                            <a class="URL" target="_blank" href="${item.URL_data}">
+                            ${item.URL_data}
+                            </a>
+                            <div class="chartType" id="${chartID}"></div>
+                        </div>
+            `;
+        }
+        setTimeout(() => createChart(chartID, item.URL_data), 100);
         return el;
     }
 
@@ -536,38 +599,6 @@ function Dashboard(options) {
                     el.innerHTML = html;
                     document.getElementById(id).appendChild(el);
                 });
-
-            // $.ajax({
-            // type: "GET",  
-            // url: URL,
-            // dataType: "text",       
-            // success: function(response)
-            //     {
-            //         data = $.csv.toArrays(response);
-
-            //         $('#'+id).append(`
-            //             <div class="ribbon"></div>
-            //         `);
-            //         $.each(data, function(index) {
-            //             var col = data[index].toString().split(',');
-
-            //             var col2 = (col[2] != undefined ? `<span>`+col[2]+`</span>` : '');
-            //             var col3 = (col[3] != undefined ? `<span>`+col[3]+`</span>` : '');
-            //             var col4 = (col[4] != undefined ? `<span>`+col[4]+`</span>` : '');
-            //             var sub = (col2 == '' && col3 == '' && col4 == '' ? '' : '<div class="subnumb">'+ col2 + col3 + col4 +'</div>');
-
-            //             $('#'+id).find('.ribbon').append(`
-            //                 <div class="ribbon-item">
-            //                     <div class="ribbon-item-title">`+col[0]+`</div>
-            //                     <h3>`+col[1]+`</h3>
-            //                     `+sub+`
-            //                 </div>
-            //             `);
-
-            //         });
-            //     }
-
-            // });
         }
     }
 }
