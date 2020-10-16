@@ -68,10 +68,7 @@ yarn add bluecore-dashboard<br>
         <script>
             Dashboard({
                 el: 'meudashboard',
-                json: 'data.json',
-                theme: {
-                    colors: ['#F00','red','black','blue']
-                }
+                json: 'data.json'
             });
         </script>
     </body>
