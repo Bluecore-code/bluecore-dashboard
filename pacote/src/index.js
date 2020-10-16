@@ -2,9 +2,6 @@ import Highcharts from 'highcharts';
 import Data from 'highcharts/modules/data';
 import Funnel from 'highcharts/modules/funnel';
 
-import Exporting from 'highcharts/modules/exporting';
-// Initialize exporting module.
-Exporting(Highcharts);
 Data(Highcharts);
 Funnel(Highcharts);
 
@@ -13,7 +10,7 @@ import './dashboard.scss';
 function Dashboard(options) {
     var defaults = {
         theme: {
-            colors: ['#82ABE0','#EE6857','#D5F3E9','#6A7876','#B6CAB4','#8DD8B8','#8180B0','#A08CAF','#C7C593']
+            colors: ['#82ABE0', '#EE6857', '#D5F3E9', '#6A7876', '#B6CAB4', '#8DD8B8', '#8180B0', '#A08CAF', '#C7C593']
         }
     }
 
@@ -24,16 +21,16 @@ function Dashboard(options) {
         await fetch(options.json)
             .then(response => response.json())
             .then((data) => {
-                data.forEach((item, index) => html += buildNewList(item, index));
+                data.forEach((item, index) => html += buildDashboard(item, index));
                 document.getElementById(options.el).innerHTML = html;
             });
     }
 
     readJson();
 
-    function buildNewList(item, index) {
+    function buildDashboard(item, index) {
         var chartID = item.Chart_Type + index;
-        let el =  `<div class="card ${item.Span}">
+        let el = `<div class="db-card ${item.Span}">
                         <div class="title">${item.Title}</div>
                         <a class="URL" target="_blank" href="${item.URL_data}">
                         ${item.URL_data}
@@ -58,10 +55,9 @@ function Dashboard(options) {
     Highcharts.setOptions(Highcharts.theme);
 
     function createChart(id, URL) {
-
-
+        // Barras Horizontais
         if (~id.indexOf("horizontalBars")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'bar',
                     renderTo: id
@@ -118,8 +114,9 @@ function Dashboard(options) {
             });
         }
 
+        // Barras Verticais
         if (~id.indexOf("verticalBars")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'column',
                     renderTo: id
@@ -180,8 +177,9 @@ function Dashboard(options) {
             });
         }
 
+        // Linha
         if (~id.indexOf("line")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'line',
                     renderTo: id
@@ -249,8 +247,9 @@ function Dashboard(options) {
             });
         }
 
+        // Curvas
         if (~id.indexOf("spline")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'spline',
                     renderTo: id
@@ -318,8 +317,9 @@ function Dashboard(options) {
             });
         }
 
+        // Pizza
         if (~id.indexOf("pie")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'pie',
                     renderTo: id
@@ -389,8 +389,9 @@ function Dashboard(options) {
             });
         }
 
+        // Funil
         if (~id.indexOf("funnel")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'funnel',
                     renderTo: id
@@ -453,8 +454,9 @@ function Dashboard(options) {
             });
         }
 
+        // Area
         if (~id.indexOf("area")) {
-            Highcharts.chart({
+            window.chart = new Highcharts.chart({
                 chart: {
                     type: 'area',
                     renderTo: id
@@ -506,6 +508,66 @@ function Dashboard(options) {
                     }
                 }
             });
+        }
+
+        // Ribbon
+        if (~id.indexOf("ribbon")) {
+            fetch(URL)
+                .then(csv => csv.text())
+                .then(response => {
+                    var el = document.createElement('div');
+                    el.classList.add('ribbon');
+                    var cols = response.split(/\r\n|\n/);
+                    var html = '';
+                    cols.forEach((col, index) => {
+                        var col = cols[index].toString().split(',');
+                        var col2 = (col[2] != undefined ? `<span>` + col[2] + `</span>` : '');
+                        var col3 = (col[3] != undefined ? `<span>` + col[3] + `</span>` : '');
+                        var col4 = (col[4] != undefined ? `<span>` + col[4] + `</span>` : '');
+
+                        var sub = (col2 == '' && col3 == '' && col4 == '' ? '' : '<div class="subnumb">' + col2 + col3 + col4 + '</div>');
+                        html += `<div class="ribbon-item">
+                            <div class="ribbon-item-title">${col[0]}</div>
+                                <h3>${col[1]}</h3>
+                                ${sub}
+                            </div>`;
+
+                    });
+                    el.innerHTML = html;
+                    document.getElementById(id).appendChild(el);
+                });
+
+            // $.ajax({
+            // type: "GET",  
+            // url: URL,
+            // dataType: "text",       
+            // success: function(response)
+            //     {
+            //         data = $.csv.toArrays(response);
+
+            //         $('#'+id).append(`
+            //             <div class="ribbon"></div>
+            //         `);
+            //         $.each(data, function(index) {
+            //             var col = data[index].toString().split(',');
+
+            //             var col2 = (col[2] != undefined ? `<span>`+col[2]+`</span>` : '');
+            //             var col3 = (col[3] != undefined ? `<span>`+col[3]+`</span>` : '');
+            //             var col4 = (col[4] != undefined ? `<span>`+col[4]+`</span>` : '');
+            //             var sub = (col2 == '' && col3 == '' && col4 == '' ? '' : '<div class="subnumb">'+ col2 + col3 + col4 +'</div>');
+
+            //             $('#'+id).find('.ribbon').append(`
+            //                 <div class="ribbon-item">
+            //                     <div class="ribbon-item-title">`+col[0]+`</div>
+            //                     <h3>`+col[1]+`</h3>
+            //                     `+sub+`
+            //                 </div>
+            //             `);
+
+            //         });
+            //     }
+
+            // });
         }
     }
 }

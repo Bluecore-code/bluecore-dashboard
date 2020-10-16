@@ -1,68 +1,86 @@
 [
+    
     {
-        "Title": "Título Gráfico 1",
+        "Title": "Visão Geral",
+        "Chart_Type": "ribbon",
+        "URL_data": "ribbon.csv",
+        "Span" : "spanLine"
+    },
+    {
+        "Title": "Barras Horizontais",
         "Chart_Type": "horizontalBars",
         "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
         "Span" : "span2"
     },
     {
-        "Title": "Título Gráfico 2",
+        "Title": "Barras Verticais",
         "Chart_Type": "verticalBars",
         "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
         "Span": "spanLine"
     },
     {
-        "Title": "Título Gráfico 3",
+        "Title": " Funil",
         "Chart_Type": "funnel",
         "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
         "Span": "span2"
     },
     {
-        "Title": "Título Gráfico 4",
+        "Title": "Ribbon 2",
+        "Chart_Type": "ribbon",
+        "URL_data": "ribbon.csv",
+        "Span" : "spanLine"
+    },
+    {
+        "Title": "Pizza",
         "Chart_Type": "pie",
         "URL_data": "https://demo-live-data.highcharts.com/updating-set.csv"
     },
     {
-        "Title": "Título Gráfico 5",
-        "Chart_Type": "horizontalBars",
-        "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv"
+        "Title": "Título da Seção",
+        "Chart_Type": "session"
     },
     {
-        "Title": "Título Gráfico 6",
+        "Title": "Barras Horizontais",
+        "Chart_Type": "horizontalBars",
+        "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
+        "Span": "span2"
+    },
+    {
+        "Title": "Linha",
         "Chart_Type": "line",
         "URL_data": "https://demo-live-data.highcharts.com/time-data.csv",
         "Span": "span2"
     },
     {
-        "Title": "Título Gráfico 7",
+        "Title": "Área",
         "Chart_Type": "area",
         "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
         "Span": "spanLine"
     },
     {
-        "Title": "Título Gráfico 8",
+        "Title": "Barras Horizontais",
         "Chart_Type": "horizontalBars",
         "URL_data": "https://demo-live-data.highcharts.com/vs-load.csv",
-        "Span": "spanLine"
+        "Span": "span3"
     },
     {
-        "Title": "Título Gráfico 9",
+        "Title": "Curvas",
         "Chart_Type": "spline",
         "URL_data": "https://demo-live-data.highcharts.com/time-data.csv",
         "Span": "span2"
     },
     {
-        "Title": "Título Gráfico 10",
+        "Title": "Pizza",
         "Chart_Type": "pie",
         "URL_data": "https://demo-live-data.highcharts.com/updating-set.csv"
     },
     {
-        "Title": "Título Gráfico 11",
+        "Title": "Pizza",
         "Chart_Type": "pie",
         "URL_data": "https://demo-live-data.highcharts.com/updating-set.csv"
     },
     {
-        "Title": "Título Gráfico 12",
+        "Title": "Pizza",
         "Chart_Type": "pie",
         "URL_data": "https://demo-live-data.highcharts.com/updating-set.csv"
     }
