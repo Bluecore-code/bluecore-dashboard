@@ -1,0 +1,20 @@
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper" id="meudashboard"></div>
+    <script src="node_modules/bluecore-dashboard/dist/dashboard.js"></script>
+    <script>
+        Dashboard({
+            el: 'meudashboard',
+            json: 'data.json',
+            theme: {
+                colors: ['#F00','red','black','blue']
+            }
+        });
+    </script>
+</body>
+
+</html>

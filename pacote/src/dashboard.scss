@@ -1,0 +1,99 @@
+body{
+  background-color: #e1e4e7;
+}
+
+:root{
+  /*Set component values*/
+  --db-font: 'Rubik';
+  --db-breakpoint-xs: 460px;          /*default: 460px*/
+  --db-breakpoint-sm: 640px;          /*default: 640px*/
+  --db-color-primary: #5f4ee2;         /*default: #5f4ee2*/
+  --db-border-color: #e1e1e1;       /*default: #e1e1e1*/
+  --db-text-color: #575d66;         /*default: #575d66*/
+  --db-bg: #eaedf0;                      /*default: #e1e4e7*/
+  --db-border-radius: 6px;            /*default: 6px*/
+  --db-font-size: 1rem;               /*default: 1rem*/
+  --db-font-size-sm: 0.6875em;        /*default: 0.6875em*/
+  --db-card-width: 280px;             /*default: 280px*/
+  --db-card-maxwidth: 480px;          /*default: 480px*/
+}
+
+body {
+    margin: 0;
+    padding: 1rem;
+    font-family: "Rubik";
+    background-color: #e1e3e6;
+  }
+  
+  .wrapper {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    -ms-grid-columns: minmax(300px, 1fr) [auto-fill];
+    grid-gap: 1.5rem;
+    grid-auto-rows: minmax(480px, auto);
+    grid-auto-flow: dense;
+  }
+  @media (max-width: 460px) {
+    .wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .span2 {
+    grid-column: 1 / span 2;
+  }
+  @media (max-width: 640px) {
+    .span2 {
+      grid-column: 1;
+    }
+  }
+  
+  .spanLine {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 640px) {
+    .spanLine {
+      grid-column: 1;
+    }
+  }
+  
+  .templates {
+    display: none;
+  }
+  
+  .chartType {
+    padding: 1rem;
+  }
+  
+  .card {
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  .card .title {
+    font-weight: 500;
+    padding: 1rem;
+    border-bottom: 1px solid #e1e1e1;
+    color: #575d66;
+  }
+  .card .URL {
+    position: absolute;
+    text-decoration: none;
+    right: 0;
+    top: 0;
+    background-color: #ccc;
+    color: white;
+    padding: 0.3rem 0.5rem;
+    font-size: 11px;
+    border-radius: 0 4px 0 4px;
+    opacity: 0.4;
+    transition: 0.3s;
+  }
+  .card .URL:hover {
+    background-color: #43c;
+    opacity: 1;
+  }
+  
